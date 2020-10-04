@@ -7,14 +7,18 @@ using System.Web.Mvc;
 
 namespace WebUI.Controllers
 {
-    public class GameController : Controller
+    public class BookController : Controller
     {
         private IBookRepository repository;
 
-        public GameController(IBookRepository repository)
+        public BookController(IBookRepository repository)
         {
             this.repository = repository;
         }
 
+        public ViewResult List()
+        {
+            return View(repository.Books);
+        }
     }
 }
