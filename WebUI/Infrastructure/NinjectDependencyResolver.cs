@@ -30,9 +30,9 @@ namespace WebUI.Infrastructure
             //настраиваем мок
             mock.Setup(m => m.Books).Returns(new List<Book>
             {
-                new Book {Name = "451", Price = 1500},
+                new Book {Name = "451 градус по фарингейту", Price = 1500},
                 new Book {Name = "1984", Price = 800},
-                new Book {Name = "1945", Price = 1101.5M}
+                new Book {Name = "Бакуман", Price = 1101.5M}
             });
             //Связываем интерфейс и созданный объект мока
             //ToConstant возращает один и тот же объект
