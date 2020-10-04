@@ -35,6 +35,7 @@ namespace WebUI.Infrastructure
                 new Book {Name = "1945", Price = 1101.5M}
             });
             //Связываем интерфейс и созданный объект мока
+            //ToConstant возращает один и тот же объект
             kernel.Bind<IBookRepository>().ToConstant(mock.Object);
         }
 
