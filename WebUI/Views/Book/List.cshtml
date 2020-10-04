@@ -1,8 +1,20 @@
-﻿@model Domain.Entities.Book
+﻿@*@model Domain.Entities.Book*@
+@*добавлякм пространство имен*@
+@using Domain.Entities
+@*меняем модель с которой будем работать*@
+@model IEnumerable<Book>
 
 @{
-    ViewBag.Title = "List";
+    ViewBag.Title = "Товары";
+}
+@foreach (var p in Model)
+{
+    <div>
+        <h3>@p.Name</h3>
+        <p>@p.Description</p>
+        <h4>@p.Price.ToString("# руб")</h4>
+    </div>
 }
 
-<h2>List</h2>
+
 
