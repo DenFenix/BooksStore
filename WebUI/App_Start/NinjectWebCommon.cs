@@ -39,6 +39,7 @@ namespace WebUI.App_Start
         /// <returns>The created kernel.</returns>
         private static IKernel CreateKernel()
         {
+            //Объект, ответственный за распознавание зависимостей, и создание новых объектов
             var kernel = new StandardKernel();
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();

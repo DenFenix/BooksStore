@@ -16,10 +16,13 @@ namespace WebUI.Infrastructure
             this.kernel = kernel;
             AddBings();
         }
-
+        /// <summary>
+        /// Указываем, какие объекты для кого интерфейса применяются
+        /// </summary>
         private void AddBings()
         {
             //тут будет привязки
+            //kernel.Bind<IXXX>().To<XXX>();
         }
 
         public object GetService(Type serviceType)
