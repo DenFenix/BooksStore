@@ -1,4 +1,5 @@
 ﻿using Domain.Abstract;
+using Domain.Concrete;
 using Domain.Entities;
 using Moq;
 using Ninject;
@@ -26,17 +27,19 @@ namespace WebUI.Infrastructure
         {
             //тут будет привязки
             //kernel.Bind<IXXX>().To<XXX>();
-            Mock<IBookRepository> mock = new Mock<IBookRepository>();
-            //настраиваем мок
-            mock.Setup(m => m.Books).Returns(new List<Book>
-            {
-                new Book {Name = "451 градус по фарингейту", Price = 1500},
-                new Book {Name = "1984", Price = 800},
-                new Book {Name = "Бакуман", Price = 1101.5M}
-            });
+            /* Mock<IBookRepository> mock = new Mock<IBookRepository>();
+             //настраиваем мок
+             mock.Setup(m => m.Books).Returns(new List<Book>
+             {
+                 new Book {Name = "451 градус по фарингейту", Price = 1500},
+                 new Book {Name = "1984", Price = 800},
+                 new Book {Name = "Бакуман", Price = 1101.5M}
+             });*/
             //Связываем интерфейс и созданный объект мока
             //ToConstant возращает один и тот же объект
-            kernel.Bind<IBookRepository>().ToConstant(mock.Object);
+            //kernel.Bind<IBookRepository>().ToConstant(mock.Object);
+
+                kernel.Bind<IBookRepository>().To<EFBookeRepository>();
         }
 
         public object GetService(Type serviceType)
