@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebUI.Models;
 
 namespace WebUI.Controllers
 {
@@ -20,10 +21,23 @@ namespace WebUI.Controllers
 
         public ViewResult List(int page = 1)
         {
-            return View(repository.Books
+            //return View(repository.Books
+            //    .OrderBy(book=>book.BookId)
+            //    .Skip((page-1)*pageSize)
+            //    .Take(pageSize));
+            BookListViewModel bookListViewModel = new BookListViewModel();
+            bookListViewModel.Books = repository.Books
                 .OrderBy(book=>book.BookId)
                 .Skip((page-1)*pageSize)
-                .Take(pageSize));
+                .Take(pageSize);
+
+            bookListViewModel.PagingInfo = new PagingInfo
+            {
+                CurrentPage = page,
+                ItemsPerPage = pageSize,
+                TotalItlems = repository.Books.Count()
+            };
+            return View(bookListViewModel);
         }
     }
 }
