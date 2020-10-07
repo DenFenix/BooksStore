@@ -12,14 +12,18 @@
 }
 @foreach (var p in Model.Books)
 {
-<div>
-    <h3>@p.Name</h3>
-    <p>@p.Description</p>
-    @*# подменяет число*@
-    <h4>@p.Price.ToString("# руб")</h4>
-</div>
+/*<div class="well">
+    <h3>
+        <strong>@p.Name</strong>
+        @*# подменяет число*@
+        <span class="pull-right label label-primary">@p.Price.ToString("# руб")</span>
+    </h3>
+    <span class="lead">@p.Description</span>
+
+</div>*/
+@Html.Partial("BookSummary", p)
 }
-<div>
+<div class="btn-group pull-right">
     @Html.PageLinks(Model.PagingInfo, x=>Url.Action("List", new {page = x }))
 </div>
 
