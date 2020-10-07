@@ -31,7 +31,7 @@ namespace UnitTests
             BookController controller = new BookController(mock.Object);
             controller.pageSize = 2;
 
-            BookListViewModel bookList = (BookListViewModel)controller.List(2).Model;
+            BookListViewModel bookList = (BookListViewModel)controller.List(null,2).Model;
             var result = bookList.Books.ToList();
             var books = result.ToList();
             Assert.IsTrue(books.Count == 2);
@@ -70,13 +70,34 @@ namespace UnitTests
             BookController bookController = new BookController(mock.Object);
             bookController.pageSize = 3;
 
-            BookListViewModel result = (BookListViewModel)bookController.List(2).Model;
+            BookListViewModel result = (BookListViewModel)bookController.List(null,2).Model;
 
             PagingInfo pagingInfo = result.PagingInfo;
             Assert.AreEqual(pagingInfo.CurrentPage, 2);
             Assert.AreEqual(pagingInfo.ItemsPerPage, 3);
             Assert.AreEqual(pagingInfo.TotalItlems, 6);
             Assert.AreEqual(pagingInfo.TotalPages, 2);
+        }
+        [TestMethod]
+        public void CanFilterGames()
+        {
+            Mock<IBookRepository> mock = new Mock<IBookRepository>();
+            mock.Setup(b => b.Books).Returns(new List<Book>
+            {
+                 new Book {BookId = 1, Name  = "Книга1", Category = "Cat1"},
+                 new Book {BookId = 2, Name  = "Книга2", Category = "Cat2"},
+                 new Book {BookId = 3, Name  = "Книга3", Category = "Cat1"},
+                 new Book {BookId = 4, Name  = "Книга4", Category = "Cat2"},
+                 new Book {BookId = 5, Name  = "Книга5", Category = "Cat3"},
+                 new Book {BookId = 6, Name  = "Книга6", Category = "Cat1"}
+            });
+            BookController bookController = new BookController(mock.Object);
+            bookController.pageSize = 3;
+
+            List<Book> result = ((BookListViewModel)bookController.List("Cat2", 1).Model).Books.ToList();
+            Assert.AreEqual(result.Count, 2);
+            Assert.IsTrue(result[0].Name == "Книга2" && result[0].Category == "Cat2");
+            Assert.IsTrue(result[1].Name == "Книга4" && result[1].Category == "Cat2");
         }
     }
 }

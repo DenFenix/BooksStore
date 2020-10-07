@@ -19,7 +19,7 @@ namespace WebUI.Controllers
             this.repository = repository;
         }
 
-        public ViewResult List(int page = 1)
+        public ViewResult List(string category, int page = 1)
         {
             //return View(repository.Books
             //    .OrderBy(book=>book.BookId)
@@ -27,6 +27,7 @@ namespace WebUI.Controllers
             //    .Take(pageSize));
             BookListViewModel bookListViewModel = new BookListViewModel();
             bookListViewModel.Books = repository.Books
+                .Where(p=>p.Category ==null || p.Category == category)
                 .OrderBy(book=>book.BookId)
                 .Skip((page-1)*pageSize)
                 .Take(pageSize);
@@ -37,6 +38,7 @@ namespace WebUI.Controllers
                 ItemsPerPage = pageSize,
                 TotalItlems = repository.Books.Count()
             };
+            bookListViewModel.CurrentCategory = category;
             return View(bookListViewModel);
         }
     }
