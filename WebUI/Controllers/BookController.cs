@@ -27,7 +27,9 @@ namespace WebUI.Controllers
             //    .Take(pageSize));
             BookListViewModel bookListViewModel = new BookListViewModel();
             bookListViewModel.Books = repository.Books
-                .Where(p=>p.Category ==null || p.Category == category)
+                .Where(p=> category == null?
+                true:
+                p.Category ==null || p.Category == category)
                 .OrderBy(book=>book.BookId)
                 .Skip((page-1)*pageSize)
                 .Take(pageSize);
