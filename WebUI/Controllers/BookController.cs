@@ -36,7 +36,9 @@ namespace WebUI.Controllers
             {
                 CurrentPage = page,
                 ItemsPerPage = pageSize,
-                TotalItlems = repository.Books.Count()
+                TotalItlems =category == null?
+                repository.Books.Count() :
+                repository.Books.Where(book=>book.Category == category).Count()
             };
             bookListViewModel.CurrentCategory = category;
             return View(bookListViewModel);

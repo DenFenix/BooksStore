@@ -143,6 +143,31 @@ namespace UnitTests
             // Утверждение
             Assert.AreEqual(categoryToSelect, result);
         }
+        [TestMethod]
+        public void Generate_Category_Specific_Game_Count()
+        {
+            Mock<IBookRepository> mock = new Mock<IBookRepository>();
+            mock.Setup(b => b.Books).Returns(new List<Book>
+            {
+                 new Book {BookId = 1, Name  = "Книга1", Category = "Cat1"},
+                 new Book {BookId = 2, Name  = "Книга2", Category = "Cat2"},
+                 new Book {BookId = 3, Name  = "Книга3", Category = "Cat1"},
+                 new Book {BookId = 4, Name  = "Книга4", Category = "Cat2"},
+                 new Book {BookId = 5, Name  = "Книга5", Category = "Cat3"},
+                 new Book {BookId = 6, Name  = "Книга6", Category = "Cat1"}
+            });
+            BookController bookController = new BookController(mock.Object);
+            bookController.pageSize = 3;
+
+            int result1 = ((BookListViewModel)bookController.List("Cat1").Model).PagingInfo.TotalItlems;
+            int result2 = ((BookListViewModel)bookController.List("Cat2").Model).PagingInfo.TotalItlems;
+            int result3 = ((BookListViewModel)bookController.List("Cat3").Model).PagingInfo.TotalItlems;
+            int result4 = ((BookListViewModel)bookController.List(null).Model).PagingInfo.TotalItlems;
+            Assert.AreEqual(result1, 3);
+            Assert.AreEqual(result2, 2);
+            Assert.AreEqual(result3, 1);
+            Assert.AreEqual(result4, 6);
+        }
 
     }
 }
