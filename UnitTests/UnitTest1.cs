@@ -31,7 +31,7 @@ namespace UnitTests
             BookController controller = new BookController(mock.Object);
             controller.pageSize = 2;
 
-            BookListViewModel bookList = (BookListViewModel)controller.List(null,2).Model;
+            BookListViewModel bookList = (BookListViewModel)controller.List(null, 2).Model;
             var result = bookList.Books.ToList();
             var books = result.ToList();
             Assert.IsTrue(books.Count == 2);
@@ -43,7 +43,7 @@ namespace UnitTests
         public void Can_Generate_Page_Links()
         {
             HtmlHelper myHelper = null;
-            PagingInfo pagingInfo = new PagingInfo {CurrentPage = 2, TotalItlems = 28, ItemsPerPage = 10 };
+            PagingInfo pagingInfo = new PagingInfo { CurrentPage = 2, TotalItlems = 28, ItemsPerPage = 10 };
 
             Func<int, string> pageUrlDelegate = i => "Page" + i;
 
@@ -70,7 +70,7 @@ namespace UnitTests
             BookController bookController = new BookController(mock.Object);
             bookController.pageSize = 3;
 
-            BookListViewModel result = (BookListViewModel)bookController.List(null,2).Model;
+            BookListViewModel result = (BookListViewModel)bookController.List(null, 2).Model;
 
             PagingInfo pagingInfo = result.PagingInfo;
             Assert.AreEqual(pagingInfo.CurrentPage, 2);
@@ -99,5 +99,50 @@ namespace UnitTests
             Assert.IsTrue(result[0].Name == "Книга2" && result[0].Category == "Cat2");
             Assert.IsTrue(result[1].Name == "Книга4" && result[1].Category == "Cat2");
         }
+        [TestMethod]
+        public void Can_Create_Categories()
+        {
+            Mock<IBookRepository> mock = new Mock<IBookRepository>();
+            mock.Setup(m => m.Books).Returns(new List<Book>
+            {
+                new Book {BookId = 1, Name  = "Книга1", Category = "Cat1"},
+                 new Book {BookId = 2, Name  = "Книга2", Category = "Cat2"},
+                 new Book {BookId = 3, Name  = "Книга3", Category = "Cat1"},
+                 new Book {BookId = 4, Name  = "Книга4", Category = "Cat2"},
+                 new Book {BookId = 5, Name  = "Книга5", Category = "Cat3"},
+                 new Book {BookId = 6, Name  = "Книга6", Category = "Cat1"}
+            });
+            NavController controller = new NavController(mock.Object);
+
+            List<string> results = ((IEnumerable<string>)controller.Menu().Model).ToList();
+            Assert.AreEqual(results.Count(), 3);
+            Assert.AreEqual(results[0], "Cat1");
+            Assert.AreEqual(results[1], "Cat2");
+            Assert.AreEqual(results[2], "Cat3");
+        }
+
+        [TestMethod]
+        public void Indicates_Selected_Category()
+        {
+            // Организация - создание имитированного хранилища
+            Mock<IBookRepository> mock = new Mock<IBookRepository>();
+            mock.Setup(m => m.Books).Returns(new Book[] {
+        new Book { BookId = 1, Name = "Игра1", Category="Симулятор"},
+        new Book { BookId = 2, Name = "Игра2", Category="Шутер"}
+        });
+
+            // Организация - создание контроллера
+            NavController target = new NavController(mock.Object);
+
+            // Организация - определение выбранной категории
+            string categoryToSelect = "Шутер";
+
+            // Действие
+            string result = target.Menu(categoryToSelect).ViewBag.SelectedCategory;
+
+            // Утверждение
+            Assert.AreEqual(categoryToSelect, result);
+        }
+
     }
 }
