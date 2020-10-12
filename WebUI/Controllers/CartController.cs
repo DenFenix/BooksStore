@@ -15,16 +15,43 @@ namespace WebUI.Controllers
     public class CartController : Controller
     {
         private IBookRepository repository;
+        private IOrderProcessor orderProcessor;
 
-        public CartController(IBookRepository repository)
+        public CartController(IBookRepository repository, IOrderProcessor orderProcessor)
         {
             this.repository = repository;
+            this.orderProcessor = orderProcessor;
         }
 
         //Метод для виджета
         public PartialViewResult Summary(Cart cart)
         {
             return PartialView(cart);
+        }
+
+        public ViewResult Checkout()
+        {
+            return View(new ShippingDetails());
+        }
+
+
+        [HttpPost]
+        public ViewResult Checkout(Cart cart, ShippingDetails shippingDetails)
+        {
+            if(cart.Lines.Count() ==0)
+            {
+                ModelState.AddModelError("", "Извините, ваша корзина пуста");
+            }
+            if(ModelState.IsValid)
+            {
+                orderProcessor.ProcessOrder(cart, shippingDetails);
+                cart.Clear();
+                return View("Completed");
+            }
+            else
+            {
+                return View(shippingDetails);
+            }
         }
 
         public ViewResult Index(Cart cart, string returnUrl)
@@ -35,6 +62,8 @@ namespace WebUI.Controllers
                 ReturnUrl = returnUrl
             });
         }
+
+   
 
         public RedirectToRouteResult AddToCart(Cart cart, int bookId, string returnUrl)
         {

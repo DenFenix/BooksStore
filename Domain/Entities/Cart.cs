@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
+    /// <summary>
+    /// Корзина книг
+    /// </summary>
     public class Cart
     {
         private List<CartLine> lineCollection = new List<CartLine>();
