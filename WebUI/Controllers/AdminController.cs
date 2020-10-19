@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace WebUI.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         IBookRepository repository;
@@ -48,5 +49,21 @@ namespace WebUI.Controllers
                 return View(book);
             }
         }
+        public ViewResult Create()
+        {
+            return View("Edit", new Book());
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int deleteId)
+        {
+            Book deletedBook = repository.DeleteBook(deleteId);
+            if (deletedBook != null)
+            {
+                TempData["message"] = string.Format($"Книга {deletedBook.Name} удалена");
+            }
+            return RedirectToAction("Index");
+        }
+        
     }
 }

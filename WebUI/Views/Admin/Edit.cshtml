@@ -13,7 +13,7 @@
         <h2>Редактирование книиги "@Model.Name"</h2>
     </div>
 
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Edit","Admin"))
     {
     <div class="panel-body">
         @Html.HiddenFor(m => m.BookId)
@@ -33,7 +33,7 @@
                         @Html.TextBox(property.PropertyName, null,
                             new { @class = "form-control" })
                     }
-                    @Html.ValidationMessage(property.PropertyName);
+                    @Html.ValidationMessage(property.PropertyName)
                 </div>
             }
         }
@@ -49,4 +49,4 @@
         </div>
 
     }
-</div>"
+</div>

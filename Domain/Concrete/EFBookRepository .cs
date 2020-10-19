@@ -13,6 +13,17 @@ namespace Domain.Concrete
         EFDbContext context = new EFDbContext();
         public IEnumerable<Book> Books { get { return context.Books; }}
 
+        public Book DeleteBook(int bookId)
+        {
+            Book dbEntry = context.Books.Find(bookId);
+            if(dbEntry != null)
+            {
+                context.Books.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
         public void SaveBook(Book book)
         {
             if (book.BookId == 0)

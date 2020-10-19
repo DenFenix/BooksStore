@@ -105,5 +105,21 @@ namespace UnitTests
 
             Assert.IsInstanceOfType(result, typeof(ViewResult));
         }
+
+        [TestMethod]
+        public void Can_Delete_Valid_Books()
+        {
+            Book book = new Book { BookId = 2, Name = "Book2" };
+            Mock<IBookRepository> mock = new Mock<IBookRepository>();
+            mock.Setup(b => b.Books).Returns(new List<Book>
+            {
+                new Book{BookId = 1, Name = "Book1"},
+                new Book{BookId = 2, Name = "Book2"},
+                new Book{BookId = 2, Name = "Book3"}
+            });
+            AdminController controller = new AdminController(mock.Object);
+            controller.Delete(book.BookId);
+            mock.Verify(m => m.DeleteBook(book.BookId));
+        }
     }
 }
