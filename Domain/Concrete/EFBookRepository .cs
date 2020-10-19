@@ -12,5 +12,24 @@ namespace Domain.Concrete
     {
         EFDbContext context = new EFDbContext();
         public IEnumerable<Book> Books { get { return context.Books; }}
+
+        public void SaveBook(Book book)
+        {
+            if (book.BookId == 0)
+                context.Books.Add(book);
+            else
+            {
+                Book dbEntrty = context.Books.Find(book.BookId);
+                if(dbEntrty!=null)
+                {
+                    dbEntrty.Name = book.Name;
+                    dbEntrty.Author = book.Author;
+                    dbEntrty.Description = book.Description;
+                    dbEntrty.Price = book.Price;
+                    dbEntrty.Category = book.Category;
+                }
+            }
+            context.SaveChanges();
+        }
     }
 }
