@@ -1,4 +1,5 @@
 ﻿using Domain.Abstract;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,17 @@ namespace WebUI.Controllers
             };
             bookListViewModel.CurrentCategory = category;
             return View(bookListViewModel);
+        }
+
+        public FileContentResult GetImage(int bookID)
+        {
+            Book book = repository.Books.FirstOrDefault(b => b.BookId == bookID);
+            if (book != null)
+            {
+                return File(book.ImageData, book.ImageMimeType);
+            }
+            else
+                return null;
         }
     }
 }

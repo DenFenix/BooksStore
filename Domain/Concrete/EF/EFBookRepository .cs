@@ -38,6 +38,8 @@ namespace Domain.Concrete
                     dbEntrty.Description = book.Description;
                     dbEntrty.Price = book.Price;
                     dbEntrty.Category = book.Category;
+                    dbEntrty.ImageData = book.ImageData;
+                    dbEntrty.ImageMimeType = book.ImageMimeType;
                 }
             }
             context.SaveChanges();

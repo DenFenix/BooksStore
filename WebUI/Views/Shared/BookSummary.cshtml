@@ -1,5 +1,13 @@
 ﻿@model Domain.Entities.Book
 <div class="well">
+    @if (Model.ImageData != null)
+    {
+        <div class="pull-left" style="margin-right: 10px">
+            <img class="img-thumbnail" width="75" height="75"
+                 src="@Url.Action("GetImage", "Book",
+                new { Model.BookId })" />
+        </div>
+    }
     <h3>
         <strong>@Model.Name</strong>
         <span class="pull-right label label-primary">@Model.Price.ToString("# руб")</span>

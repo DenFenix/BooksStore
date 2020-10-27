@@ -1,6 +1,7 @@
 ﻿using Domain.Abstract;
 using Domain.Concrete;
 using Domain.Entities;
+using Json;
 using Moq;
 using Ninject;
 using System;
@@ -42,7 +43,8 @@ namespace WebUI.Infrastructure
             //ToConstant возращает один и тот же объект
             //kernel.Bind<IBookRepository>().ToConstant(mock.Object);
 
-                kernel.Bind<IBookRepository>().To<EFBookeRepository>();
+            //kernel.Bind<IBookRepository>().To<EFBookeRepository>();
+            kernel.Bind<IBookRepository>().To<JSONBookRepository>();
             EmailSettings emailSettings = new EmailSettings
             {
                 //ConfigurationManager - настройка из web.config свойства appsettigs, строки WriteAsFile

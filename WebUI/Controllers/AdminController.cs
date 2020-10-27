@@ -35,11 +35,17 @@ namespace WebUI.Controllers
         /// <param name="book"></param>
         /// <returns>перенаправляет бразуер на индекс</returns>
         [HttpPost]
-        public ActionResult Edit (Book book)
+        public ActionResult Edit (Book book, HttpPostedFileBase image = null)
         {
             //проверяем достоверность даных
             if (ModelState.IsValid)
             {
+                if(image != null)
+                {
+                    book.ImageMimeType = image.ContentType;
+                    book.ImageData = new byte[image.ContentLength];
+                    image.InputStream.Read(book.ImageData, 0, image.ContentLength);
+                }
                 repository.SaveBook(book);
                 TempData["message"] = string.Format($"Изменение в книге {book.Name} были сохранены");
                 return RedirectToAction("Index");

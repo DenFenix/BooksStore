@@ -10,7 +10,7 @@ namespace Domain.Entities
 {
     public class Book
     {
-        [HiddenInput(DisplayValue =false)]
+        [HiddenInput(DisplayValue = false)]
         public int BookId { get; set; }
 
         [Display(Name ="Автор")]
@@ -34,5 +34,8 @@ namespace Domain.Entities
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Пожалуйста, введите положительное значение для цены")]
         public decimal Price { get; set; }
+
+        public byte[] ImageData { get; set; }
+        public string ImageMimeType { get; set; }
     }
 }
