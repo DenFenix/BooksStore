@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace Json
 {
@@ -15,9 +16,10 @@ namespace Json
         DataBook context;
 
         string jsonResult;
-        string path = /*"user.json"*/Directory.GetCurrentDirectory();
+        string path = ConfigurationManager.AppSettings["Path"];/*"user.json"*//*Directory.GetCurrentDirectory()*//*@"C:\Users\Denis\source\repos2\BooksStore\Domain\Concrete\JSON\books.json";*/
         public JSONBookRepository()
         {
+            //var dataFile = Server.MapPath("~/App_Data/data.txt");
             try
             {
                 context = JsonSerializer.Deserialize<DataBook>(Read());
@@ -52,7 +54,7 @@ namespace Json
             {
                 try
                 {
-                    book.BookId = context.Books.Max(x => x.BookId);
+                    book.BookId = context.Books.Max(x => x.BookId)+1;
                 }
                 catch(InvalidOperationException)
                 {

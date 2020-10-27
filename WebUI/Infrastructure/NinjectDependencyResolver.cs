@@ -43,8 +43,12 @@ namespace WebUI.Infrastructure
             //ToConstant возращает один и тот же объект
             //kernel.Bind<IBookRepository>().ToConstant(mock.Object);
 
-            //kernel.Bind<IBookRepository>().To<EFBookeRepository>();
-            kernel.Bind<IBookRepository>().To<JSONBookRepository>();
+            if(bool.Parse(ConfigurationManager.AppSettings["IsJson"]))           
+                kernel.Bind<IBookRepository>().To<JSONBookRepository>();          
+            else
+                kernel.Bind<IBookRepository>().To<EFBookeRepository>();
+            
+
             EmailSettings emailSettings = new EmailSettings
             {
                 //ConfigurationManager - настройка из web.config свойства appsettigs, строки WriteAsFile
